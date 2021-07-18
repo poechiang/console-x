@@ -1,0 +1,83 @@
+@import './themes/theme.less';
+@import './reset.less';
+@import './classes.less';
+@import './component.less';
+
+@keyframes ani-spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+html {
+    background-color: @background;
+    font-size: 625%;
+
+    body {
+        margin: 0;
+        background-color: @background;
+        color: @foreColor;
+        font-size: 16px;
+        font-size: 0.16rem;
+        font-family: '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
+            'Helvetica Neue', sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+}
+
+code {
+    font-family: 'source-code-pro', 'Menlo', 'Monaco', 'Consolas', 'Courier New', monospace;
+}
+
+.App {
+    .frame {
+        margin: 0 24px;
+        margin: 0 0.24rem;
+    }
+
+    .oc-header {
+        border-bottom: 1px solid @primary-color;
+        border-bottom: 0.01 solid @primary-color;
+
+        .oc-header-menu-item {
+            display: block;
+            min-width: 0.6rem;
+            height: 0.59rem;
+            padding: 0.04rem 0.11rem;
+            line-height: 0.51rem;
+
+            &:not(:last-child) {
+                margin-right: 0.08rem;
+            }
+        }
+
+        .oc-header-logo {
+            height: 32px;
+            height: 0.32rem;
+            margin-right: 8px;
+            margin-right: 0.08rem;
+        }
+
+        .oc-header-title {
+            margin: 0;
+            font-weight: normal;
+            font-size: 20px;
+            font-size: 0.2rem;
+        }
+    }
+
+    .oc-aside {
+        width: 268px;
+        width: 2.68rem;
+    }
+
+    .page-wrapper {
+        padding: 24px;
+        padding: 0.24rem;
+    }
+}

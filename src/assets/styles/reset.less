@@ -1,0 +1,27 @@
+@import './themes/theme.less';
+
+.ant-dropdown {
+    background-color: @popover-background;
+}
+
+// https://github.com/ant-design/ant-design/issues/4903
+.@{dropdown-prefix-cls}-menu-dark {
+    .@{dropdown-prefix-cls}-menu-item-selected {
+        &,
+        &:hover,
+        > a {
+            color: @theme;
+            background: transparent;
+        }
+    }
+}
+
+.@{menu-prefix-cls} {
+    &-dark &-submenu-open {
+        color: #fff;
+    }
+
+    &-dark &-submenu-title:hover {
+        color: @theme;
+    }
+}
