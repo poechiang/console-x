@@ -1,127 +1,90 @@
-import { Chart, IGroup, registerShape } from '@antv/g2';
-import { ShapeInfo } from '@antv/g2/lib/interface';
-import { isEmpty } from 'lodash';
+/* eslint-disable react-hooks/exhaustive-deps */
+import { Chart } from '@antv/g2';
+import '@lib/antv/themes';
+import { withScope } from '@lib/console';
+import { isPlainObject, isUndefined, merge, uniqueId } from 'lodash';
+import { createElement, useEffect, useState } from 'react';
+export { Chart };
+const console = withScope('antv');
+const defaultConfig = {
+    autoFit: true,
+    padding: [20, 60, 40],
+};
+const createChart = (render: CallableFunction) => {
+    const uid = uniqueId('r-a-c-');
+    return ({ id, data, debug = false, theme = 'darken', ...config }: ComponentProps) => {
+        const { autoFit = true, axis, container, className, coordinate, height = 500, interaction, legend, scale, tooltip } = config || {};
+        const chartId = container || id || uid;
 
-registerShape('polygon', 'boundary-polygon', {
-    draw(cfg: ShapeInfo, container: IGroup) {
-        if (!isEmpty(cfg.points)) {
-            const group = container.addGroup();
-            const attrs: any = {
-                stroke: '#fff',
-                lineWidth: 1,
-                fill: cfg.color,
-            };
-            const points = cfg.points as any[];
-            const path = [
-                ['M', points[0].x, points[0].y],
-                ['L', points[1].x, points[1].y],
-                ['L', points[2].x, points[2].y],
-                ['L', points[3].x, points[3].y],
-                ['Z'],
-            ];
-            attrs.path = (this as any).parsePath(path);
-            group.addShape('path', {
-                attrs,
-            });
-
-            if ((cfg?.data as any).lastWeek) {
-                const linePath = [
-                    ['M', points[2].x, points[2].y],
-                    ['L', points[3].x, points[3].y],
-                ];
-                // 最后一周的多边形添加右侧边框
-                group.addShape('path', {
-                    attrs: {
-                        path: (this as any).parsePath(linePath),
-                        lineWidth: 4,
-                        stroke: '#404040',
+        const [chart, setChart] = useState<Chart>();
+        useEffect(() => {
+            const chart = new Chart(
+                merge(
+                    {},
+                    defaultConfig,
+                    {
+                        autoFit,
+                        height,
                     },
+                    { container: chartId }
+                )
+            );
+            chart.theme(theme);
+            data && chart.data(data);
+
+            if (axis && isPlainObject(axis)) {
+                Object.entries(axis).forEach(([key, cfg]) => {
+                    chart.axis(key, cfg as any);
                 });
-                if ((cfg?.data as any).lastDay) {
-                    group.addShape('path', {
-                        attrs: {
-                            path: (this as any).parsePath([
-                                ['M', points[1].x, points[1].y],
-                                ['L', points[2].x, points[2].y],
-                            ]),
-                            lineWidth: 4,
-                            stroke: '#404040',
-                        },
-                    });
-                }
+            } else if (axis === false) {
+                chart.axis(false);
+            }
+            if (scale) {
+                chart.scale(scale);
+            }
+            if (!isUndefined(legend)) {
+                chart.legend(legend);
             }
 
-            return group;
-        }
-    },
-});
-const render = <T = any>(container: string, data: T[], config?: any) => {
-    const chart = new Chart({
-        container: 'container',
-        autoFit: true,
-        height: 500,
-        padding: [150, 30, 150, 70],
-    });
-    chart.data(data);
-    chart.scale({
-        day: {
-            type: 'cat',
-            values: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
-        },
-        week: {
-            type: 'cat',
-        },
-        commits: {
-            sync: true,
-        },
-        date: {
-            type: 'cat',
-        },
-    });
+            if (!isUndefined(tooltip)) {
+                chart.tooltip(tooltip);
+            }
 
-    chart.axis('week', {
-        position: 'top',
-        tickLine: null,
-        line: null,
-        label: {
-            offset: 12,
-            style: {
-                fontSize: 12,
-                fill: '#666',
-                textBaseline: 'top',
-            },
-            formatter: val => {
-                if (val === '2') {
-                    return 'MAY';
-                } else if (val === '6') {
-                    return 'JUN';
-                } else if (val === '10') {
-                    return 'JUL';
-                } else if (val === '15') {
-                    return 'AUG';
-                } else if (val === '19') {
-                    return 'SEP';
-                } else if (val === '24') {
-                    return 'OCT';
-                }
-                return '';
-            },
-        },
-    });
-    chart.axis('day', {
-        grid: null,
-    });
-    chart.legend(false);
-    chart.tooltip({
-        title: 'date',
-        showMarkers: false,
-    });
-    chart.coordinate().reflect('y');
-    chart.polygon().position('week*day*date').color('commits', '#BAE7FF-#1890FF-#0050B3').shape('boundary-polygon');
+            if (!isUndefined(coordinate)) {
+                const view = chart.coordinate();
+                coordinate?.reflect && view.reflect(coordinate.reflect);
+            }
+            interaction && chart.interaction(interaction.name || interaction, interaction.cfg || undefined);
+            render?.(chart);
+            chart.render();
 
-    chart.interaction('element-active');
+            setChart(chart);
+            return () => chart.destroy();
+        }, []);
 
-    chart.render();
+        useEffect(() => {
+            debug && console.log('other configs changed...', config);
+            chart?.updateOptions(config);
+            chart?.render(true);
+        }, [...Object.values(config)]);
+        useEffect(() => {
+            debug && console.log('theme changed...', theme);
+            chart?.theme(theme);
+        }, [theme]);
+
+        useEffect(() => {
+            debug && console.log('data changed...', data);
+
+            chart?.changeData(data);
+            render?.(chart);
+            chart?.render(false);
+        }, [data]);
+
+        return createElement('div', {
+            id: chartId,
+            className,
+        });
+    };
 };
 
-export default render;
+export default createChart;

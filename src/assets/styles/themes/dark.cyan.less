@@ -3,10 +3,27 @@
 
 @theme: #61dafb;
 @primary-color: @theme;
+@back-color: #282c34;
+@fore-color: #ffffff;
+
+@txt-color: @fore-color;
+@txt-color1: darken(@fore-color, 10%);
+@txt-color2: darken(@fore-color, 20%);
+@txt-color3: darken(@fore-color, 30%);
+@txt-color4: darken(@fore-color, 40%);
+@txt-color5: darken(@fore-color, 50%);
+@txt-color6: darken(@fore-color, 60%);
+@txt-color7: darken(@fore-color, 70%);
+@txt-color8: darken(@fore-color, 80%);
+@txt-color9: darken(@fore-color, 90%);
+
 // Layer background
 @popover-background: #1f1f1f;
 @body-background: #212121;
 @component-background: #141414;
+
+@theme-color: @primary-color;
+@box-shadow-color: #0000001f;
 
 // Menu
 // ---
@@ -14,9 +31,12 @@
 @menu-dark-inline-submenu-bg: transparent;
 @menu-dark-bg: transparent;
 @menu-popup-bg: @popover-background;
-
 @menu-dark-item-active-bg: transparent;
-
 @menu-dark-highlight-color: @theme;
 @menu-dark-selected-item-icon-color: @theme;
 @menu-dark-selected-item-text-color: @theme;
+
+/** components start */
+
+/** Blocker */
+@blocker-background: @back-color;
