@@ -1,0 +1,156 @@
+@alignItems: baseline, center, end, flex-end, flex-start, normal, safe, self-end, self-start, start,
+  stretch, unsafe, inherit, initial, unset;
+
+@justifyContent: baseline, center, end, flex-end, flex-start, normal, safe, left, right,
+  space-around, space-between, space-evenly, start, stretch, unsafe, inherit, initial, unset;
+@flexdirections:row, column,row-reverse,column-reverse;
+@flexes: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, auto,
+  content, none, inherit, initial, unset;
+.flexable {
+  display: flex;
+  each(@flexdirections,{
+        &.--@{value}{
+            flex-direction: @value;
+        }
+    })
+    each(@justifyContent,{
+        &.--main-@{value} {
+            justify-content: @value;
+        }
+    });
+
+  each(@alignItems,{
+        &.--cross-@{value} {
+            align-items: @value;
+        }
+    });
+
+  each(@flexes,{
+        .flex-@{value} {
+            flex: @value;
+        }
+    });
+}
+
+@marginPaddings: 0, 1, 2, 4, 5, 8, 10, 12, 15, 16, 20, 24, 25, 28, 30, 32, 35, 36, 40, 44, 45, 48,
+  50, 52, 55, 56, 60, 64;
+@presetsMarginPaddings: {
+  sm: 4;
+  md: 8;
+  lg: 16;
+};
+@mapProperties: {
+  m: margin;
+  p: padding;
+};
+
+.all(@p,@v) {
+  @{p}: (@value * 1px);
+}
+.bottom(@p,@v) {
+  @{p}-bottom: (@value * 1px);
+}
+.left(@p,@v) {
+  @{p}-left: (@value * 1px);
+}
+.right(@p,@v) {
+  @{p}-right: (@value * 1px);
+}
+.top(@p,@v) {
+  @{p}-top: (@value * 1px);
+}
+.auto(@p,@v) {
+  @{p}: (@value * 1px);
+  @{p}+_: auto;
+}
+
+each(@marginPaddings, .(@value) {
+    each(@mapProperties, .(@p, @k) {
+        .@{k}-@{value}{
+            .all(@p,@value);
+        }
+        .@{k}b-@{value}{
+            .bottom(@p,@value);
+        }
+        .@{k}l-@{value}{
+            .left(@p,@value);
+        }
+        .@{k}r-@{value}{
+            .right(@p,@value);
+        }
+        .@{k}t-@{value}{
+            .top(@p,@value);
+        }
+        .@{k}h-@{value}{
+            .left(@p,@value);
+            .right(@p,@value);
+        }
+        .@{k}v-@{value}{
+            .bottom(@p,@value);
+            .top(@p,@value);
+        }
+        .@{k}a-@{value}{
+            .auto(@p,@value)
+        }
+    });
+});
+
+each(@presetsMarginPaddings, .( @value,@key) {
+    each(@mapProperties, .(@p, @k) {
+        .@{k}-@{key}{
+            .all(@p,@value);
+        }
+        .@{k}b-@{key}{
+            .bottom(@p,@value);
+        }
+        .@{k}l-@{key}{
+            .left(@p,@value);
+        }
+        .@{k}r-@{key}{
+            .right(@p,@value);
+        }
+        .@{k}t-@{key}{
+            .top(@p,@value);
+        }
+        .@{k}h-@{key}{
+            .left(@p,@value);
+            .right(@p,@value);
+        }
+        .@{k}v-@{key}{
+            .bottom(@p,@value);
+            .top(@p,@value);
+        }
+        .@{k}a-@{key}{
+            .auto(@p,@value)
+        }
+    });
+});
+
+@textAligns: center, end, justify, left, right, start, inherit, initial, unset;
+each(@textAligns,{
+.hor-@{value} {
+    text-align: @value;
+
+}
+});
+.full-screen {
+  width: 100vw;
+  height: 100vh;
+}
+
+.text-link {
+  color: @colorLink;
+}
+
+.text-error {
+  color: @colorError;
+}
+.text-info {
+  color: @colorInfo;
+}
+.text-success {
+  color: @colorSuccess;
+}
+.text-warning {
+  color: @colorWarning;
+}

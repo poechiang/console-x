@@ -1,0 +1,29 @@
+{
+  "extends": "@vue/tsconfig/tsconfig.dom.json",
+  "include": [
+    "business.d.ts",
+    "env.d.ts",
+    "shim.d.ts",
+    "src/types/*.d.ts",
+    "src/**/*",
+    "src/**/*.vue",
+    "src/**/*.ts"
+  ],
+  "exclude": ["src/**/__tests__/*"],
+  "compilerOptions": {
+    "composite": true,
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["./src/*"],
+      "@components/*": ["./src/components/*"],
+      "@fonts/*": ["./src/assets/fonts/*"],
+      "@icons/*": ["./src/icons/*"],
+      "@images/*": ["./src/assets/images/*"],
+      "@libs/*": ["./src/libs/*"],
+      "@stores/*": ["./src/stores/*"],
+      "@styles/*": ["./src/assets/styles/*"],
+      "@themes/*": ["./src/assets/themes/*"],
+      "@views/*": ["./src/views/*"]
+    }
+  }
+}

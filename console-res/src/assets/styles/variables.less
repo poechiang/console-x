@@ -1,0 +1,40 @@
+/* semantic color variables for this project */
+:root:not([res-micro-app]) {
+  --color-primary: #00bd7e;
+}
+:root:not([res-micro-app]):not([theme-dark]) {
+  --color-bg-base: #f6f7f9;
+  --color-bg-container: #ffffff;
+  --color-switch-back: #f0f0f0;
+  --color-switch-graphy-shadow: #0000003c;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([res-micro-app]):not([theme-light]) {
+    --color-bg-base: #000000;
+    --color-bg-container: #141414;
+    --color-switch-back: #3b3b3b;
+    --color-switch-graphy-shadow: #ffffff3c;
+  }
+}
+
+:root {
+  --color-heading: var(--color-text-base);
+  --color-text: var(--color-text-base);
+  --color-theme: var(--color-primary);
+  --color-link: var(--color-primary);
+
+  --section-gap: 160px;
+}
+
+@colorBgBase: var(--color-bg-base);
+@colorBgContainer: var(--color-bg-container);
+@colorPrimary: var(--color-primary);
+@colorLink: var(--color-primary);
+@colorError: var(--color-error);
+@colorInfo: var(--color-info);
+@colorSuccess: var(--color-success);
+@colorWarning: var(--color-warning);
+
+@colorSwitchBackground: var(--color-switch-back);
+@colorSwitchGraphyShadow: var(--color-switch-graphy-shadow);
